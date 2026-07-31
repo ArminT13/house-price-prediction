@@ -1,64 +1,56 @@
 import pandas as pd
 from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
 
-# Downloading Datas
+# 1. Load Dataset
 housing = fetch_california_housing(as_frame=True)
 df = housing.frame
 
-# Showing 5 Rows
-print("5 Satr aval:")
+# 2. Exploratory Data Analysis (EDA)
+print("--- First 5 Rows ---")
 print(df.head())
-print("===========================")
-print(df.shape)
-print("===========================")
+print("\n--- Dataset Info ---")
 print(df.info())
-print("===========================")
+print("\n--- Summary Statistics ---")
 print(df.describe())
-print("===========================")
-# تفکیک ویژگی‌ها و هدف
-X = df.drop(columns=['MedHouseVal'])  # همه ستون‌ها به جز قیمت
-y = df['MedHouseVal']                 # فقط ستون قیمت
 
-# بررسی ابعاد
-print("X shape:", X.shape)
-print("y shape:", y.shape)
+# 3. Feature and Target Separation
+X = df.drop(columns=["MedHouseVal"])
+y = df["MedHouseVal"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-print("(X_train):", X_train.shape[0])
-print("(X_test):", X_test.shape[0])
+print(f"\nFeature matrix shape: {X.shape}")
+print(f"Target vector shape: {y.shape}")
 
-# ۱. تعریف مدل
-model = LinearRegression()
+# 4. Train-Test Split (80% Train, 20% Test)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+print(f"Training samples: {X_train.shape[0]}")
+print(f"Testing samples: {X_test.shape[0]}")
 
-# ۲. آموزش مدل با داده‌های Train
-model.fit(X_train, y_train)
+# 5. Baseline Model: Linear Regression
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
 
-# ۳. پیش‌بینی قیمت برای داده‌های Test
-y_pred = model.predict(X_test)
+lr_y_pred = lr_model.predict(X_test)
+lr_mse = mean_squared_error(y_test, lr_y_pred)
+lr_r2 = r2_score(y_test, lr_y_pred)
 
-# نمایش ۳ پیش‌بینی اول در مقایسه با قیمت‌های واقعی
-print("Predict: ", y_pred[:3])
-print("Real prices: ", y_test.iloc[:3].values)
+print("\n=== Linear Regression Evaluation ===")
+print(f"Mean Squared Error (MSE): {lr_mse:.4f}")
+print(f"R2 Score: {lr_r2:.4f}")
 
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-print("Mean Squared Error (MSE):", mse)
-print("R2 Score:", r2)
-
-# ۱. تعریف و آموزش مدل Random Forest
+# 6. Advanced Model: Random Forest Regressor
 rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
 rf_model.fit(X_train, y_train)
 
-# ۲. پیش‌بینی و ارزیابی
 rf_y_pred = rf_model.predict(X_test)
 rf_mse = mean_squared_error(y_test, rf_y_pred)
 rf_r2 = r2_score(y_test, rf_y_pred)
 
-print("\n--- Random Forest Results ---")
-print("Random Forest MSE:", rf_mse)
-print("Random Forest R2 Score:", rf_r2)
+print("\n=== Random Forest Evaluation ===")
+print(f"Mean Squared Error (MSE): {rf_mse:.4f}")
+print(f"R2 Score: {rf_r2:.4f}")
