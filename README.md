@@ -34,3 +34,7 @@ Run the application:
    ```bash
 python main.py
 ```
+
+## 🌐 Live Demo
+Experience the interactive prediction model live:
+👉 [California House Price Predictor App](https://house-price-prediction-armint13.streamlit.app/)
