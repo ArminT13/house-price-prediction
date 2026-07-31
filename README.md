@@ -25,10 +25,12 @@ This project explores the California Housing dataset, performs Exploratory Data 
 
 Install dependencies:
 
-Bash
+   ```bash
 pip install pandas scikit-learn
+```
 
 Run the application:
 
-Bash
+   ```bash
 python main.py
+```
