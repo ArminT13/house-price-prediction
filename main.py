@@ -3,6 +3,7 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.ensemble import RandomForestRegressor
 
 # Downloading Datas
 housing = fetch_california_housing(as_frame=True)
@@ -48,3 +49,16 @@ r2 = r2_score(y_test, y_pred)
 
 print("Mean Squared Error (MSE):", mse)
 print("R2 Score:", r2)
+
+# ۱. تعریف و آموزش مدل Random Forest
+rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
+# ۲. پیش‌بینی و ارزیابی
+rf_y_pred = rf_model.predict(X_test)
+rf_mse = mean_squared_error(y_test, rf_y_pred)
+rf_r2 = r2_score(y_test, rf_y_pred)
+
+print("\n--- Random Forest Results ---")
+print("Random Forest MSE:", rf_mse)
+print("Random Forest R2 Score:", rf_r2)
