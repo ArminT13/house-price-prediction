@@ -54,3 +54,24 @@ rf_r2 = r2_score(y_test, rf_y_pred)
 print("\n=== Random Forest Evaluation ===")
 print(f"Mean Squared Error (MSE): {rf_mse:.4f}")
 print(f"R2 Score: {rf_r2:.4f}")
+
+# 7. Predict Price for a Custom House
+print("\n=== Interactive House Price Prediction ===")
+
+# Sample input for 1 house
+sample_house = pd.DataFrame([{
+    'MedInc': float(input("MedInc: ")),       # Median Income ($35,000)
+    'HouseAge': int(input("HouseAge: ")),    # House Age (years)
+    'AveRooms': int(input("AveRooms: ")),     # Average Rooms
+    'AveBedrms': int(input("AveBedrms: ")),    # Average Bedrooms
+    'Population': int(input("Population: ")),  # Population
+    'AveOccup': int(input("AveOccup: ")),     # Average Household Members
+    'Latitude': float(input("Latitude: ")),   # Latitude
+    'Longitude': float(input("Longitude: ")) # Longitude
+}])
+
+# Predict using Random Forest
+predicted_val = rf_model.predict(sample_house)[0]
+actual_dollar_price = predicted_val * 100000
+
+print(f"Estimated Price for Sample House: ${actual_dollar_price:,.2f}")
